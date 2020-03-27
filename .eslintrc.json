@@ -1,0 +1,99 @@
+{
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "airbnb",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "react-hooks"
+  ],
+  "env": {
+    "browser": true
+  },
+  "globals": {
+    "jsdom": false
+  },
+  "ignorePatterns": [
+    "tools/"
+  ],
+  "rules": {
+    "comma-dangle": [
+      "error",
+      {
+        "arrays": "only-multiline",
+        "imports": "only-multiline",
+        "objects": "only-multiline",
+        "functions": "never"
+      }
+    ],
+    "import/extensions": [
+      "error",
+      "ignorePackages",
+      {
+        "js": "never",
+        "jsx": "never",
+        "ts": "never",
+        "tsx": "never"
+      }
+    ],
+    "import/no-extraneous-dependencies": [0],
+    "import/prefer-default-export": [0],
+    "linebreak-style": [0],
+    "max-classes-per-file": [0],
+    "max-len": [
+      "error",
+      {
+        "code": 100,
+        "ignorePattern": "^\\s*export|^\\s*const",
+        "ignoreUrls": true
+      }
+    ],
+    "no-nested-ternary": [0],
+    "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+    "no-unused-vars": "off",
+    "no-useless-constructor": "off",
+    "react-hooks/rules-of-hooks": "error",
+    "react-hooks/exhaustive-deps": "warn",
+    "react/jsx-filename-extension": [
+      1,
+      {
+        "extensions": [
+          ".js",
+          ".jsx",
+          ".ts",
+          ".tsx"
+        ]
+      }
+    ],
+    "react/prop-types": [0],
+    "@typescript-eslint/explicit-function-return-type": [0, { "allowExpressions": true }],
+    "@typescript-eslint/indent": [1, 2],
+    "@typescript-eslint/no-explicit-any": [0],
+    "@typescript-eslint/no-unused-vars": ["error", { "vars": "all", "args": "after-used", "ignoreRestSiblings": true }],
+    "@typescript-eslint/no-useless-constructor": "error"
+  },
+  "overrides": [
+    {
+      "files": ["**.spec.tsx", "**.spec.ts"],
+      "env": {
+        "jest": true
+      },
+      "plugins": [
+        "@typescript-eslint",
+        "jest"
+      ],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": [0]
+      }
+    }
+  ],
+  "settings": {
+    "import/resolver": {
+      "node": {
+        "paths": ["src"],
+        "extensions": [".js", ".jsx", ".ts", ".tsx"]
+      }
+    }
+  }
+}
