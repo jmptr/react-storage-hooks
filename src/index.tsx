@@ -4,11 +4,21 @@ import {
   useState,
 } from 'react';
 
-type EventName = keyof WindowEventMap;
-type Handler<K extends EventName> = (event: WindowEventMap[K]) => void;
-
-export const useEventHandler = <K extends EventName>(eventName: K, handler: Handler<K>): void => {
-  const ref = useRef<Handler<K>>();
+/**
+ * Wraps the window event listener for the specified event and invokes the handler
+ * with the original event.
+ *
+ * @param eventName A case-sensitive string representing the event type to listen for.
+ * @param handler The object which receives a notification (an object that
+ * implements the Event interface) when an event of the specified type occurs.
+ * This must be an object implementing the EventListener interface, or a JavaScript
+ * function. See The event listener callback for details on the callback itself.
+ */
+export const useEventHandler = <K extends keyof WindowEventMap>(
+  eventName: K,
+  handler: (event: WindowEventMap[K]) => void
+): void => {
+  const ref = useRef<typeof handler>();
 
   useEffect(() => {
     ref.current = handler;
@@ -24,14 +34,21 @@ export const useEventHandler = <K extends EventName>(eventName: K, handler: Hand
   });
 };
 
+/**
+ * Subscribes to changes to localStorage for the specified key.
+ *
+ * @param key Value of the key, if the key does not exist, null will be returned
+ */
 export const useLocalStorageProp = (key: string) => {
   const initialValue = localStorage.getItem(key);
   const [currentValue, setValue] = useState(initialValue);
 
   useEventHandler('storage', (event: StorageEvent) => {
-    if (event.storageArea === window.localStorage) {
+    if (event.key === key && event.storageArea === window.localStorage) {
       const newValue = localStorage.getItem(key);
-      setValue(newValue);
+      if (newValue !== currentValue) {
+        setValue(newValue);
+      }
     }
   });
   return currentValue;
